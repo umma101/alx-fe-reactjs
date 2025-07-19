@@ -2,7 +2,7 @@ import Header from './components/Header';
 import MainContent from './components/MainContent';
 import Footer from './components/Footer';
 import UserProfile from './components/UserProfile';  // ✅ import your new component
-
+import Counter from './components/Counter'; // ✅ import the Counter component
 
 function App() {
   
