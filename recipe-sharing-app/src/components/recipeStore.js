@@ -59,10 +59,14 @@ export const useRecipeStore = create((set) => ({
         !state.favorites.includes(recipe.id) &&
         (recipe.tags || []).some(tag => favoriteTags.includes(tag))
       )
+      .sort((a, b) => {
+          const aMatches = (a.tags || []).filter(tag => favoriteTags.includes(tag)).length;
+          const bMatches = (b.tags || []).filter(tag => favoriteTags.includes(tag)).length;
+          return bMatches - aMatches;
+        })
       .slice(0, 5); // Limit to 5 recommendations
       
     return { recommendations: recommended };
   }),
 
 }));
-

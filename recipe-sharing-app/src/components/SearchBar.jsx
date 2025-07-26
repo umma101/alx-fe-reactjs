@@ -1,4 +1,3 @@
-// src/components/SearchBar.jsx
 import useRecipeStore from './recipeStore';
 
 const SearchBar = () => {
@@ -13,4 +12,4 @@ const SearchBar = () => {
   );
 };
 
-export default SearchBar; 
+export default SearchBar;
