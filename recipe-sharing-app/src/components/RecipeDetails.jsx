@@ -11,6 +11,7 @@ const RecipeDetail = () => {
 
   return (
     <div>
+      <h1>{recipe.id}</h1>
       <h2>{recipe.title}</h2>
       <p>{recipe.description}</p>
     </div>
