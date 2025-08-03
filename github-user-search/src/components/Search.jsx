@@ -1,52 +1,44 @@
-// src/components/Search.jsx
-import React, { useState } from 'react';
-import { fetchUserData } from '../services/githubService';
+import { useState } from "react";
 
-const Search = () => {
-  const [username, setUsername] = useState('');
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+export default function Search({ onSearch }) {
+  const [username, setUsername] = useState("");
+  const [location, setLocation] = useState("");
+  const [minRepos, setMinRepos] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
-    setUserData(null);
-
-    try {
-      const data = await fetchUserData(username);
-      setUserData(data);
-    } catch (err) {
-      setError('Looks like we can’t find the user.');
-    } finally {
-      setLoading(false);
-    }
+    onSearch({ username, location, minRepos });
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Enter GitHub username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <button type="submit">Search</button>
-      </form>
-
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}Looks like we cant find the user</p>}
-      {userData && (
-        <div>
-          <img src={userData.avatar_url} alt={userData.login} width={100} />
-          <h3>{userData.name || userData.login}</h3>
-          <a href={userData.html_url} target="_blank" rel="noopener noreferrer">View Profile</a>
-        </div>
-      )}
-    </div>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4 max-w-md mx-auto">
+      <input
+        type="text"
+        placeholder="Username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        className="p-2 border rounded"
+      />
+      <input
+        type="text"
+        placeholder="Location (e.g. Nairobi)"
+        value={location}
+        onChange={(e) => setLocation(e.target.value)}
+        className="p-2 border rounded"
+      />
+      <input
+        type="number"
+        placeholder="Minimum Repos"
+        value={minRepos}
+        onChange={(e) => setMinRepos(e.target.value)}
+        className="p-2 border rounded"
+      />
+      <button
+        type="submit"
+        className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
+      >
+        Search
+      </button>
+    </form>
   );
-};
-
-export default Search;
+}
