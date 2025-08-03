@@ -77,7 +77,7 @@ const Search = () => {
       </form>
 
       {loading && <p className="mt-4 text-blue-600">Loading...</p>}
-      {error && <p className="mt-4 text-red-500">{error}</p>}
+      {error && <p className="mt-4 text-red-500">{error} Looks like we cant find the user</p>}
 
       <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
         {users.length > 0 &&
