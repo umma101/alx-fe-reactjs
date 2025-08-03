@@ -1,50 +1,55 @@
 import React, { useState } from 'react';
+import { fetchUserData } from '../services/githubService';
 
-export default function Search({ onSearch }) {
-  const [username, setUsername] = useState('');
-  const [location, setLocation] = useState('');
-  const [minRepos, setMinRepos] = useState('');
+const Search = () => {
+  const [query, setQuery] = useState('');
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSearch = () => {
-    const queryParts = [];
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!query) return;
 
-    if (username) queryParts.push(`${username} in:login`);
-    if (location) queryParts.push(`location:${location}`);
-    if (minRepos) queryParts.push(`repos:>=${minRepos}`);
+    setLoading(true);
+    setError('');
+    setUser(null);
 
-    const query = queryParts.join(' ');
-    onSearch(query);
+    try {
+      const data = await fetchUserData(query);
+      setUser(data);
+    } catch (err) {
+      setError('Looks like we can’t find the user');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="p-4 flex flex-col gap-2 sm:flex-row sm:items-end">
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        className="border p-2 rounded w-full sm:w-1/3"
-      />
-      <input
-        type="text"
-        placeholder="Location"
-        value={location}
-        onChange={(e) => setLocation(e.target.value)}
-        className="border p-2 rounded w-full sm:w-1/3"
-      />
-      <input
-        type="number"
-        placeholder="Min Repos"
-        value={minRepos}
-        onChange={(e) => setMinRepos(e.target.value)}
-        className="border p-2 rounded w-full sm:w-1/3"
-      />
-      <button
-        onClick={handleSearch}
-        className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-      >
-        Search
-      </button>
+    <div className="search">
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={query}
+          placeholder="Search GitHub username"
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <button type="submit">Search</button>
+      </form>
+
+      {loading && <p>Loading...</p>}
+      {error && <p style={{ color: 'red' }}>{error} Looks like we cant find the user </p>}
+      {user && (
+        <div className="user-card">
+          <img src={user.avatar_url} alt={user.login} width={100} />
+          <h3>{user.name || user.login}</h3>
+          <a href={user.html_url} target="_blank" rel="noreferrer">
+            View GitHub Profile
+          </a>
+        </div>
+      )}
     </div>
   );
-}
+};
+
+export default Search;

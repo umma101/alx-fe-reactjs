@@ -1,6 +1,6 @@
-// src/services/githubService.ts
-export async function searchUsers(query: string) {
-  const response = await fetch(`https://api.github.com/search/users?q=${encodeURIComponent(query)}`);
-  if (!response.ok) throw new Error("Failed to fetch users");
-  return await response.json(); // returns { items: [...] }
-}
+import axios from 'axios';
+
+export const fetchUserData = async (username) => {
+  const response = await axios.get(`https://api.github.com/users/${username}`);
+  return response.data;
+};
