@@ -1,30 +1,4 @@
 import { useEffect } from 'react';
-<<<<<<< HEAD
-import { useRecipeStore } from '../store/recipeStore';
-
-const RecommendationsList = () => {
-  const recommendations = useRecipeStore((state) => state.recommendations);
-  const generateRecommendations = useRecipeStore(
-    (state) => state.generateRecommendations
-  );
-
-  useEffect(() => {
-    generateRecommendations();
-  }, [generateRecommendations]);
-
-  return (
-    <div>
-      <h2>Recommended for You</h2>
-      {recommendations.length === 0 ? (
-        <p>No recommendations yet. Favorite some recipes!</p>
-      ) : (
-        recommendations.map((recipe) => (
-          <div key={recipe.id} style={{ border: '1px solid #ccc', marginBottom: '10px', padding: '10px' }}>
-            <h3>{recipe.title}</h3>
-            <p>{recipe.description}</p>
-          </div>
-        ))
-=======
 import { useRecipeStore } from './recipeStore';
 
 const RecommendationsList = () => {
@@ -60,14 +34,9 @@ const RecommendationsList = () => {
             </div>
           ))}
         </div>
->>>>>>> 7816280772fd4f217e5b8897efdbb90bca864654
       )}
     </div>
   );
 };
 
-<<<<<<< HEAD
 export default RecommendationsList;
-=======
-export default RecommendationsList;
->>>>>>> 7816280772fd4f217e5b8897efdbb90bca864654

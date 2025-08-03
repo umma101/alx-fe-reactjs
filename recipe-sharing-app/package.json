@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "name": "recipe-sharing-app",
+=======
+  "name": "alx-react-app",
+>>>>>>> 7816280772fd4f217e5b8897efdbb90bca864654
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,6 +14,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+<<<<<<< HEAD
+=======
+    "npm": "^11.5.1",
+>>>>>>> 7816280772fd4f217e5b8897efdbb90bca864654
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.7.1",
