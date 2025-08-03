@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { fetchUsersByQuery } from '../services/githubService';
+import { fetchUsersByQuery, fetchUserData } from '../services/githubService';
 
 const Search = () => {
   const [username, setUsername] = useState('');
@@ -17,8 +17,14 @@ const Search = () => {
 
     try {
       const query = buildQuery(username, location, minRepos);
-      const result = await fetchUsersByQuery(query);
-      setUsers(result);
+      const results = await fetchUsersByQuery(query);
+
+      // Fetch detailed user info using fetchUserData
+      const detailedUsers = await Promise.all(
+        results.map((user) => fetchUserData(user.login))
+      );
+
+      setUsers(detailedUsers);
     } catch (err) {
       console.error(err);
       setError("Looks like we can't find the user");
@@ -71,7 +77,7 @@ const Search = () => {
       </form>
 
       {loading && <p className="mt-4 text-blue-600">Loading...</p>}
-      {error && <p className="mt-4 text-red-500">{error} Looks like we cant find the user</p>}
+      {error && <p className="mt-4 text-red-500">{error}</p>}
 
       <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
         {users.length > 0 &&
@@ -79,11 +85,16 @@ const Search = () => {
             <div key={user.id} className="bg-gray-100 p-4 rounded shadow">
               <img src={user.avatar_url} alt={user.login} className="w-16 h-16 rounded-full mb-2" />
               <h3 className="text-lg font-semibold">{user.login}</h3>
-              <p>
-                <a href={user.html_url} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
-                  View Profile
-                </a>
-              </p>
+              <p><strong>Location:</strong> {user.location || 'N/A'}</p>
+              <p><strong>Public Repos:</strong> {user.public_repos}</p>
+              <a
+                href={user.html_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 underline"
+              >
+                View Profile
+              </a>
             </div>
           ))}
       </div>
