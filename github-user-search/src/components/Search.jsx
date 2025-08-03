@@ -1,44 +1,50 @@
-import { useState } from "react";
+import React, { useState } from 'react';
 
 export default function Search({ onSearch }) {
-  const [username, setUsername] = useState("");
-  const [location, setLocation] = useState("");
-  const [minRepos, setMinRepos] = useState("");
+  const [username, setUsername] = useState('');
+  const [location, setLocation] = useState('');
+  const [minRepos, setMinRepos] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSearch({ username, location, minRepos });
+  const handleSearch = () => {
+    const queryParts = [];
+
+    if (username) queryParts.push(`${username} in:login`);
+    if (location) queryParts.push(`location:${location}`);
+    if (minRepos) queryParts.push(`repos:>=${minRepos}`);
+
+    const query = queryParts.join(' ');
+    onSearch(query);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4 max-w-md mx-auto">
+    <div className="p-4 flex flex-col gap-2 sm:flex-row sm:items-end">
       <input
         type="text"
         placeholder="Username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
-        className="p-2 border rounded"
+        className="border p-2 rounded w-full sm:w-1/3"
       />
       <input
         type="text"
-        placeholder="Location (e.g. Nairobi)"
+        placeholder="Location"
         value={location}
         onChange={(e) => setLocation(e.target.value)}
-        className="p-2 border rounded"
+        className="border p-2 rounded w-full sm:w-1/3"
       />
       <input
         type="number"
-        placeholder="Minimum Repos"
+        placeholder="Min Repos"
         value={minRepos}
         onChange={(e) => setMinRepos(e.target.value)}
-        className="p-2 border rounded"
+        className="border p-2 rounded w-full sm:w-1/3"
       />
       <button
-        type="submit"
-        className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
+        onClick={handleSearch}
+        className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
       >
         Search
       </button>
-    </form>
+    </div>
   );
 }
